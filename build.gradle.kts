@@ -1,7 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("java-library")
     kotlin("jvm") version "1.5.32"
 }
 
@@ -20,4 +19,10 @@ dependencies {
 
 tasks.withType<KotlinCompile>() {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.withType<Jar>() {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    from(configurations.compileClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
 }
