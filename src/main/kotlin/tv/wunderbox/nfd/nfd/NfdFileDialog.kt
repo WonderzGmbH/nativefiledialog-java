@@ -125,7 +125,7 @@ class NfdFileDialog : FileDialog {
                     return FileDialog.Error.ERROR.left()
                 } finally {
                     nfd.NFD_FreePathN(
-                        filePath = outPathPointer,
+                        filePath = outPathPointer.value,
                     )
                 }
                 outPath.let(::File)
@@ -179,7 +179,7 @@ class NfdFileDialog : FileDialog {
             return FileDialog.Error.ERROR.left()
         } finally {
             nfd.NFD_FreePathN(
-                filePath = outPathPointer,
+                filePath = outPathPointer.value,
             )
         }
 

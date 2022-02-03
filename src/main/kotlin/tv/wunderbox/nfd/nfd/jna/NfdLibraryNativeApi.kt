@@ -75,7 +75,7 @@ interface NfdLibraryNativeApi {
 
     fun NFD_PathSet_Free(pathSet: Pointer)
 
-    fun NFD_FreePathN(filePath: PointerByReference)
+    fun NFD_FreePathN(filePath: Pointer)
 
     /**
      * Gets the number of entries stored in pathSet
