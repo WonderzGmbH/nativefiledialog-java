@@ -12,7 +12,7 @@ import javax.swing.filechooser.FileFilter
 /**
  * @author Artem Chepurnoy
  */
-class AwtFileDialog(
+public class AwtFileDialog(
     private val window: Component,
     private val title: String? = null,
 ) : FileDialog {

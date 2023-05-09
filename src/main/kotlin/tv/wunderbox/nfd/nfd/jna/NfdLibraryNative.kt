@@ -41,12 +41,12 @@ private fun extractLibrary(filename: String): File {
     return outFile
 }
 
-interface NfdLibraryNative : Library, NfdLibraryNativeApi {
-    companion object {
+public interface NfdLibraryNative : Library, NfdLibraryNativeApi {
+    public companion object {
         @Volatile
         private var instance: NfdLibraryNativeApi? = null
 
-        fun get(): NfdLibraryNativeApi {
+        public fun get(): NfdLibraryNativeApi {
             if (instance == null) {
                 synchronized(NfdLibraryNative::class.java) {
                     if (instance == null) {

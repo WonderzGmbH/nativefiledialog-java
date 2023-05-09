@@ -3,7 +3,7 @@ package tv.wunderbox.nfd.nfd.jna
 import com.sun.jna.FromNativeContext
 import com.sun.jna.NativeMapped
 
-enum class NfdResult : NativeMapped {
+public enum class NfdResult : NativeMapped {
     NFD_ERROR, /* programmatic error */
     NFD_OKAY, /* user pressed okay, or successful return */
     NFD_CANCEL; /* user pressed cancel */

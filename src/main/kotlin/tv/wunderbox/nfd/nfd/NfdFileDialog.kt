@@ -9,7 +9,7 @@ import tv.wunderbox.nfd.FileDialog
 import tv.wunderbox.nfd.nfd.jna.*
 import java.io.File
 
-class NfdFileDialog : FileDialog {
+public class NfdFileDialog : FileDialog {
     override fun save(
         filters: List<FileDialog.Filter>,
         defaultPath: String?,

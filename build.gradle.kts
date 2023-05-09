@@ -11,6 +11,10 @@ repositories {
     mavenCentral()
 }
 
+kotlin {
+    explicitApi()
+}
+
 dependencies {
     implementation("net.java.dev.jna:jna:5.13.0")
     implementation("io.arrow-kt:arrow-core:1.0.1")
