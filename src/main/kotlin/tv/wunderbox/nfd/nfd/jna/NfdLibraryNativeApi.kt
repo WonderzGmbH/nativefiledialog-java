@@ -3,16 +3,16 @@ package tv.wunderbox.nfd.nfd.jna
 import com.sun.jna.*
 import com.sun.jna.ptr.PointerByReference
 
-interface NfdLibraryNativeApi {
+public interface NfdLibraryNativeApi {
     /**
      * Initialize NFD - call this for every thread that might use NFD, before calling any other NFD
      * functions on that thread
      */
-    fun NFD_Init(
+    public fun NFD_Init(
     ): NfdResult
 
     /** Call this to de-initialize NFD, if NFD_Init returned NFD_OKAY */
-    fun NFD_Quit()
+    public fun NFD_Quit()
 
     /**
      * Single file open dialog
@@ -23,7 +23,7 @@ interface NfdLibraryNativeApi {
      * If filterCount is zero, filterList is ignored (you can use NULL)
      * If defaultPath is NULL, the operating system will decide
      */
-    fun NFD_OpenDialogN(
+    public fun NFD_OpenDialogN(
         outPath: PointerByReference,
         filterList: Pointer?,
         filterCount: NativeLong,
@@ -39,7 +39,7 @@ interface NfdLibraryNativeApi {
      * If filterCount is zero, filterList is ignored (you can use NULL)
      * If defaultPath is NULL, the operating system will decide
      */
-    fun NFD_OpenDialogMultipleN(
+    public fun NFD_OpenDialogMultipleN(
         outPaths: PointerByReference,
         filterList: Pointer?,
         filterCount: NativeLong,
@@ -55,7 +55,7 @@ interface NfdLibraryNativeApi {
      * If filterCount is zero, filterList is ignored (you can use NULL)
      * If defaultPath is NULL, the operating system will decide
      */
-    fun NFD_SaveDialogN(
+    public fun NFD_SaveDialogN(
         outPath: PointerByReference,
         filterList: Pointer?,
         filterCount: NativeLong,
@@ -71,11 +71,11 @@ interface NfdLibraryNativeApi {
      *
      * If defaultPath is NULL, the operating system will decide
      */
-    fun NFD_PickFolderN(outPath: PointerByReference, defaultPath: Pointer?): NfdResult
+    public fun NFD_PickFolderN(outPath: PointerByReference, defaultPath: Pointer?): NfdResult
 
-    fun NFD_PathSet_Free(pathSet: Pointer)
+    public fun NFD_PathSet_Free(pathSet: Pointer)
 
-    fun NFD_FreePathN(filePath: Pointer)
+    public fun NFD_FreePathN(filePath: Pointer)
 
     /**
      * Gets the number of entries stored in pathSet
@@ -83,7 +83,7 @@ interface NfdLibraryNativeApi {
      * note that some paths might be invalid (NFD_ERROR will be returned by NFD_PathSet_GetPath), so we
      * might not actually have this number of usable paths
      */
-    fun NFD_PathSet_GetCount(
+    public fun NFD_PathSet_GetCount(
         pathSet: Pointer,
         count: Pointer,
     ): NfdResult
@@ -94,7 +94,7 @@ interface NfdLibraryNativeApi {
      * It is the caller's responsibility to free `outPath` via NFD_PathSet_FreePathN() if this function
      * returns NFD_OKAY
      */
-    fun NFD_PathSet_GetPathN(
+    public fun NFD_PathSet_GetPathN(
         pathSet: Pointer,
         index: Long,
         outPath: PointerByReference,

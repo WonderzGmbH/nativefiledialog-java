@@ -5,13 +5,13 @@ import tv.wunderbox.nfd.nfd.NfdFileDialog
 import java.awt.Component
 import java.io.File
 
-interface FileDialog {
-    companion object {
+public interface FileDialog {
+    public companion object {
         /**
          * Default implementation tries to open the native file dialog, and
          * falls back to the AWT file dialog if that.
          */
-        fun default(
+        public fun default(
             window: Component,
         ): FileDialog = kotlin.run {
             val nfd = NfdFileDialog()
@@ -22,38 +22,38 @@ interface FileDialog {
         }
     }
 
-    fun save(
+    public fun save(
         filters: List<Filter> = emptyList(),
         defaultPath: String? = null,
         defaultName: String? = null,
     ): FileDialogResult<File>
 
-    fun pickFile(
+    public fun pickFile(
         filters: List<Filter> = emptyList(),
         defaultPath: String? = null,
     ): FileDialogResult<File>
 
-    fun pickFileMany(
+    public fun pickFileMany(
         filters: List<Filter> = emptyList(),
         defaultPath: String? = null,
     ): FileDialogResult<List<File>>
 
-    fun pickDirectory(
+    public fun pickDirectory(
         defaultPath: String? = null,
     ): FileDialogResult<File>
 
-    enum class Error {
+    public enum class Error {
         ERROR,
         CANCEL,
     }
 
-    data class Filter(
+    public data class Filter(
         val title: String,
         val extensions: List<String>,
     )
 }
 
-fun FileDialog.fallbackWith(nfd: FileDialog): FileDialog =
+public fun FileDialog.fallbackWith(nfd: FileDialog): FileDialog =
     object : FileDialog {
         override fun save(
             filters: List<FileDialog.Filter>,
