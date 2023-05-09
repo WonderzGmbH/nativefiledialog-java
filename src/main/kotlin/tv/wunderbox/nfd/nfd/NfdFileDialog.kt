@@ -5,7 +5,6 @@ import arrow.core.left
 import arrow.core.right
 import com.sun.jna.*
 import com.sun.jna.ptr.PointerByReference
-import org.apache.commons.lang3.SystemUtils
 import tv.wunderbox.nfd.FileDialog
 import tv.wunderbox.nfd.nfd.jna.*
 import java.io.File
@@ -89,7 +88,7 @@ class NfdFileDialog : FileDialog {
         if (countResult != NfdResult.NFD_OKAY)
             return FileDialog.Error.ERROR.left()
         val count = try {
-            if (SystemUtils.IS_OS_LINUX) {
+            if (Platform.isLinux()) {
                 countPointer
                     .getInt(0L)
             } else {
