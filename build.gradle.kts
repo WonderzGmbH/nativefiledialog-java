@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation("net.java.dev.jna:jna:5.10.0")
+    implementation("net.java.dev.jna:jna:5.13.0")
     implementation("io.arrow-kt:arrow-core:1.0.1")
 }
 
