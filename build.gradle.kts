@@ -1,7 +1,8 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.5.32"
+    kotlin("jvm") version "1.8.21"
 }
 
 group = "tv.wunderbox"
@@ -17,8 +18,10 @@ dependencies {
     implementation("org.apache.commons:commons-lang3:3.12.0")
 }
 
-tasks.withType<KotlinCompile>() {
-    kotlinOptions.jvmTarget = "1.8"
+tasks.withType<KotlinCompile> {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_1_8)
+    }
 }
 
 tasks.withType<Jar>() {
