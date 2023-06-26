@@ -103,6 +103,7 @@ jobs:
 
       - name: Copy binaries
         run: |
+          mkdir src/main/resources
           cp lib-mac/libnfd.dylib src/main/resources/libnfd_mac.dylib
           cp lib-linux/libnfd.so src/main/resources/libnfd_linux.so
           cp lib-windows/nfd.dll src/main/resources/libnfd_win.dll
