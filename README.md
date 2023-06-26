@@ -5,6 +5,11 @@ As a fallback it uses default AWT file picker.
 
 *A library is a perfect fit for the Jetpack Compose for Desktop.*
 
+Supported platforms: 
+- Windows;
+- MacOS;
+- Linux (GTK).
+
 ### API
 
 ```kotlin
