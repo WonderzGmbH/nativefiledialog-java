@@ -1,6 +1,5 @@
 package tv.wunderbox.nfd
 
-import arrow.core.Either
 import tv.wunderbox.nfd.awt.AwtFileDialog
 import tv.wunderbox.nfd.nfd.NfdFileDialog
 import java.awt.Component
@@ -27,21 +26,21 @@ interface FileDialog {
         filters: List<Filter> = emptyList(),
         defaultPath: String? = null,
         defaultName: String? = null,
-    ): Either<Error, File>
+    ): FileDialogResult<File>
 
     fun pickFile(
         filters: List<Filter> = emptyList(),
         defaultPath: String? = null,
-    ): Either<Error, File>
+    ): FileDialogResult<File>
 
     fun pickFileMany(
         filters: List<Filter> = emptyList(),
         defaultPath: String? = null,
-    ): Either<Error, List<File>>
+    ): FileDialogResult<List<File>>
 
     fun pickDirectory(
         defaultPath: String? = null,
-    ): Either<Error, File>
+    ): FileDialogResult<File>
 
     enum class Error {
         ERROR,
@@ -60,7 +59,7 @@ fun FileDialog.fallbackWith(nfd: FileDialog): FileDialog =
             filters: List<FileDialog.Filter>,
             defaultPath: String?,
             defaultName: String?,
-        ): Either<FileDialog.Error, File> = try {
+        ): FileDialogResult<File> = try {
             this@fallbackWith.save(
                 filters = filters,
                 defaultPath = defaultPath,
@@ -79,7 +78,7 @@ fun FileDialog.fallbackWith(nfd: FileDialog): FileDialog =
         override fun pickFile(
             filters: List<FileDialog.Filter>,
             defaultPath: String?,
-        ): Either<FileDialog.Error, File> = try {
+        ): FileDialogResult<File> = try {
             this@fallbackWith.pickFile(
                 filters = filters,
                 defaultPath = defaultPath,
@@ -96,7 +95,7 @@ fun FileDialog.fallbackWith(nfd: FileDialog): FileDialog =
         override fun pickFileMany(
             filters: List<FileDialog.Filter>,
             defaultPath: String?,
-        ): Either<FileDialog.Error, List<File>> = try {
+        ): FileDialogResult<List<File>> = try {
             this@fallbackWith.pickFileMany(
                 filters = filters,
                 defaultPath = defaultPath,
@@ -112,7 +111,7 @@ fun FileDialog.fallbackWith(nfd: FileDialog): FileDialog =
 
         override fun pickDirectory(
             defaultPath: String?,
-        ): Either<FileDialog.Error, File> = try {
+        ): FileDialogResult<File> = try {
             this@fallbackWith.pickDirectory(
                 defaultPath = defaultPath,
             )

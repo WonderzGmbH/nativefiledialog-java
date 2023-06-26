@@ -13,21 +13,21 @@ interface FileDialog {
         filters: List<Filter> = emptyList(),
         defaultPath: String? = null,
         defaultName: String? = null,
-    ): Either<Error, File>
+    ): FileDialogResult<File>
 
     fun pickFile(
         filters: List<Filter> = emptyList(),
         defaultPath: String? = null,
-    ): Either<Error, File>
+    ): FileDialogResult<File>
 
     fun pickFileMany(
         filters: List<Filter> = emptyList(),
         defaultPath: String? = null,
-    ): Either<Error, List<File>>
+    ): FileDialogResult<List<File>>
 
     fun pickDirectory(
         defaultPath: String? = null,
-    ): Either<Error, File>
+    ): FileDialogResult<File>
 }
 ```
 

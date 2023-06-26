@@ -1,9 +1,7 @@
 package tv.wunderbox.nfd.awt
 
-import arrow.core.Either
-import arrow.core.left
-import arrow.core.toOption
 import tv.wunderbox.nfd.FileDialog
+import tv.wunderbox.nfd.FileDialogResult
 import java.awt.Component
 import java.io.File
 import javax.swing.JFileChooser
@@ -20,7 +18,7 @@ class AwtFileDialog(
         filters: List<FileDialog.Filter>,
         defaultPath: String?,
         defaultName: String?,
-    ): Either<FileDialog.Error, File> {
+    ): FileDialogResult<File> {
         val chooser = createJFileChooser(
             filters = filters,
             defaultPath = defaultPath,
@@ -37,7 +35,7 @@ class AwtFileDialog(
     override fun pickFile(
         filters: List<FileDialog.Filter>,
         defaultPath: String?,
-    ): Either<FileDialog.Error, File> {
+    ): FileDialogResult<File> {
         val chooser = createJFileChooser(
             filters = filters,
             defaultPath = defaultPath,
@@ -53,7 +51,7 @@ class AwtFileDialog(
     override fun pickFileMany(
         filters: List<FileDialog.Filter>,
         defaultPath: String?,
-    ): Either<FileDialog.Error, List<File>> {
+    ): FileDialogResult<List<File>> {
         val chooser = createJFileChooser(
             filters = filters,
             defaultPath = defaultPath,
@@ -101,7 +99,7 @@ class AwtFileDialog(
         block()
     }
 
-    override fun pickDirectory(defaultPath: String?): Either<FileDialog.Error, File> {
+    override fun pickDirectory(defaultPath: String?): FileDialogResult<File> {
         val chooser = JFileChooser().apply {
             title?.let(::setDialogTitle)
 
@@ -126,12 +124,19 @@ class AwtFileDialog(
         window: Component,
         open: JFileChooser.(Component) -> Int,
         handle: JFileChooser.() -> T?,
-    ): Either<FileDialog.Error, T> = when (open(window)) {
+    ): FileDialogResult<T> = when (open(window)) {
         JFileChooser.APPROVE_OPTION -> {
-            handle().toOption().toEither { FileDialog.Error.CANCEL }
+            val result = handle()
+            if (result != null) {
+                FileDialogResult.Success(result)
+            } else {
+                val why = FileDialog.Error.CANCEL
+                FileDialogResult.Failure(why)
+            }
         }
-        JFileChooser.CANCEL_OPTION -> FileDialog.Error.CANCEL.left()
-        JFileChooser.ERROR_OPTION -> FileDialog.Error.ERROR.left()
+
+        JFileChooser.CANCEL_OPTION -> FileDialogResult.Failure(FileDialog.Error.CANCEL)
+        JFileChooser.ERROR_OPTION -> FileDialogResult.Failure(FileDialog.Error.ERROR)
         else -> error("Unknown file chooser result.")
     }
 }

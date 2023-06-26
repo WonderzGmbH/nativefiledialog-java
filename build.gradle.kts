@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "tv.wunderbox"
-version = "0.1.2"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
@@ -13,7 +13,6 @@ repositories {
 
 dependencies {
     implementation("net.java.dev.jna:jna:5.13.0")
-    implementation("io.arrow-kt:arrow-core:1.0.1")
 }
 
 tasks.withType<KotlinCompile>() {
