@@ -16,15 +16,15 @@ jobs:
       - name: Installing Dependencies
         run: sudo apt-get update && sudo apt-get install libgtk-3-dev
       - name: Configure
-        run: mkdir build && mkdir install && cd build && cmake -DCMAKE_INSTALL_PREFIX="../install" -DNFD_BUILD_TESTS=OFF ..
+        run: cd nativefiledialog-extended && mkdir build && mkdir install && cd build && cmake -DCMAKE_INSTALL_PREFIX="../install" -DNFD_BUILD_TESTS=OFF ..
       - name: Build
-        run: cmake --build build --target install
+        run: cd nativefiledialog-extended && cmake --build build --target install
       - name: Upload binaries
         uses: actions/upload-artifact@v2
         with:
           name: lib-ubuntu
           path: |
-            install/lib/*
+            nativefiledialog-extended/install/lib/*
   
   macos_binary:
     name: MacOS latest - Clang
@@ -35,15 +35,15 @@ jobs:
         with:
           submodules: recursive
       - name: Configure
-        run: mkdir build && mkdir install && cd build && cmake -DCMAKE_INSTALL_PREFIX="../install" -DCMAKE_BUILD_TYPE=Release -DNFD_BUILD_TESTS=OFF ..
+        run: cd nativefiledialog-extended && mkdir build && mkdir install && cd build && cmake -DCMAKE_INSTALL_PREFIX="../install" -DCMAKE_BUILD_TYPE=Release -DNFD_BUILD_TESTS=OFF ..
       - name: Build
-        run: cmake --build build --target install
+        run: cd nativefiledialog-extended && cmake --build build --target install
       - name: Upload binaries
         uses: actions/upload-artifact@v2
         with:
           name: lib-mac
           path: |
-            install/lib/*
+            nativefiledialog-extended/install/lib/*
   
   windows_binary:
     name: Windows latest - MSVC
@@ -54,15 +54,15 @@ jobs:
         with:
           submodules: recursive
       - name: Configure
-        run: mkdir build && mkdir install && cd build && cmake -DCMAKE_INSTALL_PREFIX="../install" -DCMAKE_BUILD_TYPE=Release -DNFD_BUILD_TESTS=OFF ..
+        run: cd nativefiledialog-extended && mkdir build && mkdir install && cd build && cmake -DCMAKE_INSTALL_PREFIX="../install" -DCMAKE_BUILD_TYPE=Release -DNFD_BUILD_TESTS=OFF ..
       - name: Build
-        run: cmake --build build --target install --config Release
+        run: cd nativefiledialog-extended && cmake --build build --target install --config Release
       - name: Upload binaries
         uses: actions/upload-artifact@v2
         with:
           name: lib-win
           path: |
-            install/bin/*
+            nativefiledialog-extended/install/bin/*
 
   jar:
     runs-on: ubuntu-latest
