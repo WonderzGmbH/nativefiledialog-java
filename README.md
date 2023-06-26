@@ -34,6 +34,6 @@ interface FileDialog {
 #### Example usage
 ```kotlin
 val fileDialog = FileDialog.default(awtComponent)
-fileDialog.pickDirectory() // returns Either<Error, File>
+fileDialog.pickDirectory() // returns FileDialogResult<File>
 ```
    
