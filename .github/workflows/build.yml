@@ -22,7 +22,7 @@ jobs:
       - name: Upload binaries
         uses: actions/upload-artifact@v2
         with:
-          name: lib-ubuntu
+          name: lib-linux
           path: |
             nativefiledialog-extended/install/lib/*
   
