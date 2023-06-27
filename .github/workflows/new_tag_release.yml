@@ -1,8 +1,9 @@
-name: "🤖 Build"
+name: "🤖 New tag -> release"
 
 on:
   push:
-    branches: [ master ]
+    tags:
+      - 'v*'
 
 jobs:
   linux_binary:
@@ -25,7 +26,7 @@ jobs:
           name: lib-linux
           path: |
             nativefiledialog-extended/install/lib/*
-  
+
   macos_binary:
     name: MacOS latest - Clang
     runs-on: macos-latest
@@ -44,7 +45,7 @@ jobs:
           name: lib-mac
           path: |
             nativefiledialog-extended/install/lib/*
-  
+
   windows_binary:
     name: Windows latest - MSVC
     runs-on: windows-latest
@@ -83,6 +84,7 @@ jobs:
           java-version: 8
 
       - name: Setup Gradle
+        id: setup-java
         uses: gradle/gradle-build-action@v2
 
       - name: Download lib-mac binary
@@ -108,8 +110,21 @@ jobs:
           cp lib-linux/libnfd.so src/main/resources/libnfd_linux.so
           cp lib-windows/nfd.dll src/main/resources/libnfd_win.dll
 
+      - name: Copy secrets
+        run: |
+          echo "${{ secrets.SECRING_BASE64 }}" | base64 -d | zcat >> secring.gpg
+          echo "" >> gradle.properties
+          echo "signing.keyId=${{ secrets.SIGNING_KEY_ID }}" >> gradle.properties
+          echo "signing.password=${{ secrets.SIGNING_PASSWORD }}" >> gradle.properties
+          echo "ossrhUsername=${{ secrets.OSSRH_USERNAME }}" >> gradle.properties
+          echo "ossrhPassword=${{ secrets.OSSRH_PASSWORD }}" >> gradle.properties
+
       - name: Build fat .jar
-        run: ./gradlew :jar
+        uses: eskatos/gradle-command-action@v1
+        env:
+          JAVA_HOME: ${{ steps.setup-java.outputs.path }}
+        with:
+          arguments: ":jar"
 
       - name: Upload .jar
         uses: actions/upload-artifact@v2
@@ -117,3 +132,26 @@ jobs:
           name: jar
           path: |
             build/libs/*.jar
+
+      - name: Sign
+        uses: eskatos/gradle-command-action@v1
+        env:
+          JAVA_HOME: ${{ steps.setup-java.outputs.path }}
+        with:
+          arguments: "sign"
+
+      - name: Publish
+        uses: eskatos/gradle-command-action@v1
+        env:
+          JAVA_HOME: ${{ steps.setup-java.outputs.path }}
+        with:
+          arguments: "publish"
+
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false

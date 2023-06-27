@@ -72,3 +72,6 @@ art/
 src/main/resources/libnfd_mac.dylib
 src/main/resources/libnfd_linux.so
 src/main/resources/libnfd_win.dll
+
+# secrets
+secring.gpg
