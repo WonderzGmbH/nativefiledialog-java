@@ -1,3 +1,5 @@
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/tv.wunderbox/nativefiledialog/badge.svg)](https://maven-badges.herokuapp.com/maven-central/tv.wunderbox/nativefiledialog)
+
 # Native File Dialog Java
 
 A Kotlin/Java wrapper around the small C library by Bernard Teo ([btzy/nativefiledialog-extended](https://github.com/btzy/nativefiledialog-extended)). 
@@ -9,6 +11,18 @@ Supported platforms:
 - Windows;
 - MacOS;
 - Linux (GTK).
+
+### Download
+
+```groovy
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation("tv.wunderbox:nativefiledialog:$nativeFileDialogVersion")
+}
+```
 
 ### API
 
