@@ -71,6 +71,8 @@ jobs:
       - macos_binary
       - linux_binary
       - windows_binary
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v3
