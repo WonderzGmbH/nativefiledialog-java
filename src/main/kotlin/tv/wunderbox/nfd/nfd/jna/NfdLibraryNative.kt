@@ -1,7 +1,6 @@
 package tv.wunderbox.nfd.nfd.jna
 
 import com.sun.jna.*
-import org.apache.commons.lang3.SystemUtils
 import java.io.File
 import java.nio.file.Files
 
@@ -14,12 +13,9 @@ private const val NFD_OS_FILE_FILENAME = "libnfd"
 
 private val libraryFile by lazy {
     val filename = when {
-        SystemUtils.IS_OS_WINDOWS ->
-            NFD_RES_FILENAME_WIN
-        SystemUtils.IS_OS_MAC || SystemUtils.IS_OS_MAC_OSX ->
-            NFD_RES_FILENAME_MAC
-        SystemUtils.IS_OS_LINUX ->
-            NFD_RES_FILENAME_LINUX
+        Platform.isWindows() -> NFD_RES_FILENAME_WIN
+        Platform.isMac() -> NFD_RES_FILENAME_MAC
+        Platform.isLinux() -> NFD_RES_FILENAME_LINUX
         else -> throw IllegalArgumentException()
     }
     extractLibrary(filename)
@@ -45,12 +41,12 @@ private fun extractLibrary(filename: String): File {
     return outFile
 }
 
-interface NfdLibraryNative : Library, NfdLibraryNativeApi {
-    companion object {
+public interface NfdLibraryNative : Library, NfdLibraryNativeApi {
+    public companion object {
         @Volatile
         private var instance: NfdLibraryNativeApi? = null
 
-        fun get(): NfdLibraryNativeApi {
+        public fun get(): NfdLibraryNativeApi {
             if (instance == null) {
                 synchronized(NfdLibraryNative::class.java) {
                     if (instance == null) {

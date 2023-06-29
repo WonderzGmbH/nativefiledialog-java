@@ -1,21 +1,18 @@
 package tv.wunderbox.nfd.nfd
 
-import arrow.core.Either
-import arrow.core.left
-import arrow.core.right
 import com.sun.jna.*
 import com.sun.jna.ptr.PointerByReference
-import org.apache.commons.lang3.SystemUtils
 import tv.wunderbox.nfd.FileDialog
+import tv.wunderbox.nfd.FileDialogResult
 import tv.wunderbox.nfd.nfd.jna.*
 import java.io.File
 
-class NfdFileDialog : FileDialog {
+public class NfdFileDialog : FileDialog {
     override fun save(
         filters: List<FileDialog.Filter>,
         defaultPath: String?,
         defaultName: String?,
-    ): Either<FileDialog.Error, File> = pick { nfd, outPathPointer ->
+    ): FileDialogResult<File> = pick { nfd, outPathPointer ->
         nfd.NFD_SaveDialogN(
             outPath = outPathPointer,
             filterList = filters
@@ -35,7 +32,7 @@ class NfdFileDialog : FileDialog {
     override fun pickFile(
         filters: List<FileDialog.Filter>,
         defaultPath: String?,
-    ): Either<FileDialog.Error, File> = pick { nfd, outPathPointer ->
+    ): FileDialogResult<File> = pick { nfd, outPathPointer ->
         nfd.NFD_OpenDialogN(
             outPath = outPathPointer,
             filterList = filters
@@ -52,7 +49,7 @@ class NfdFileDialog : FileDialog {
     override fun pickFileMany(
         filters: List<FileDialog.Filter>,
         defaultPath: String?,
-    ): Either<FileDialog.Error, List<File>> {
+    ): FileDialogResult<List<File>> {
         val nfd = NfdLibraryNative.get() // may throw an exception
         nfd.NFD_Init()
 
@@ -74,8 +71,8 @@ class NfdFileDialog : FileDialog {
             scope.dispose()
         }
         when (result) {
-            NfdResult.NFD_CANCEL -> return FileDialog.Error.CANCEL.left()
-            NfdResult.NFD_ERROR -> return FileDialog.Error.ERROR.left()
+            NfdResult.NFD_CANCEL -> return FileDialogResult.Failure(FileDialog.Error.CANCEL)
+            NfdResult.NFD_ERROR -> return FileDialogResult.Failure(FileDialog.Error.ERROR)
             else -> {
                 // Continue.
             }
@@ -87,9 +84,9 @@ class NfdFileDialog : FileDialog {
             count = countPointer,
         )
         if (countResult != NfdResult.NFD_OKAY)
-            return FileDialog.Error.ERROR.left()
+            return FileDialogResult.Failure(FileDialog.Error.ERROR)
         val count = try {
-            if (SystemUtils.IS_OS_LINUX) {
+            if (Platform.isLinux()) {
                 countPointer
                     .getInt(0L)
             } else {
@@ -100,7 +97,7 @@ class NfdFileDialog : FileDialog {
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            return FileDialog.Error.ERROR.left()
+            return FileDialogResult.Failure(FileDialog.Error.ERROR)
         }
 
         val files = (0 until count)
@@ -122,7 +119,7 @@ class NfdFileDialog : FileDialog {
                         .getString(0L)
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    return FileDialog.Error.ERROR.left()
+                    return FileDialogResult.Failure(FileDialog.Error.ERROR)
                 } finally {
                     nfd.NFD_FreePathN(
                         filePath = outPathPointer.value,
@@ -135,12 +132,12 @@ class NfdFileDialog : FileDialog {
         nfd.NFD_PathSet_Free(outPathIteratorPointer.value)
         nfd.NFD_Quit()
 
-        return files.right()
+        return FileDialogResult.Success(files)
     }
 
     override fun pickDirectory(
         defaultPath: String?,
-    ): Either<FileDialog.Error, File> = pick { nfd, outPathPointer ->
+    ): FileDialogResult<File> = pick { nfd, outPathPointer ->
         nfd.NFD_PickFolderN(
             outPath = outPathPointer,
             defaultPath = defaultPath?.takeIf { it.isNotBlank() }
@@ -151,7 +148,7 @@ class NfdFileDialog : FileDialog {
 
     private fun pick(
         block: DisposableScope.(NfdLibraryNativeApi, PointerByReference) -> NfdResult,
-    ): Either<FileDialog.Error, File> {
+    ): FileDialogResult<File> {
         val nfd = NfdLibraryNative.get() // may throw an exception
         nfd.NFD_Init()
 
@@ -163,8 +160,8 @@ class NfdFileDialog : FileDialog {
             scope.dispose()
         }
         when (result) {
-            NfdResult.NFD_CANCEL -> return FileDialog.Error.CANCEL.left()
-            NfdResult.NFD_ERROR -> return FileDialog.Error.ERROR.left()
+            NfdResult.NFD_CANCEL -> return FileDialogResult.Failure(FileDialog.Error.CANCEL)
+            NfdResult.NFD_ERROR -> return FileDialogResult.Failure(FileDialog.Error.ERROR)
             else -> {
                 // Continue.
             }
@@ -176,7 +173,7 @@ class NfdFileDialog : FileDialog {
                 .getString(0L)
         } catch (e: Exception) {
             e.printStackTrace()
-            return FileDialog.Error.ERROR.left()
+            return FileDialogResult.Failure(FileDialog.Error.ERROR)
         } finally {
             nfd.NFD_FreePathN(
                 filePath = outPathPointer.value,
@@ -186,6 +183,6 @@ class NfdFileDialog : FileDialog {
         nfd.NFD_Quit()
 
         val outFile = File(outPath)
-        return outFile.right()
+        return FileDialogResult.Success(outFile)
     }
 }
