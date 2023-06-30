@@ -53,7 +53,10 @@ interface FileDialog {
 #### Example usage
 ```kotlin
 val fileDialog = FileDialog.default(awtComponent)
-fileDialog.pickDirectory() // returns FileDialogResult<File>
+val result = fileDialog.pickFile() // returns FileDialogResult<File>
+if (result is FileDialogResult.Success) {
+    val file = result.value
+}
 ```
 
 When using [Kotlin Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform) the `awtComponent` variable is a `ComposeWindow` object that might be obtained from `androidx.compose.ui.window.WindowScope`. 
