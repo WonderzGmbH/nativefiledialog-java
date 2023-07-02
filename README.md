@@ -54,9 +54,25 @@ interface FileDialog {
 ```kotlin
 val fileDialog = FileDialog.default(awtComponent)
 val result = fileDialog.pickFile() // returns FileDialogResult<File>
-if (result is FileDialogResult.Success) {
-    val file = result.value
+when (result) {
+    is FileDialogResult.Success -> {
+        val file = result.value
+        // Handle success
+    }
+    is FileDialogResult.Failure -> {
+        // Handle failure
+    }
 }
+```
+
+##### Create picker directly
+Internally there are two different implementations available,
+instead of using the default `NfdFileDialog` with `AwtFileDialog` as 
+a fallback, you can use only one:
+
+```kotlin
+val nfdFileDialog = NfdFileDialog()
+val awtFileDialog = AwtFileDialog(awtComponent)
 ```
 
 When using [Kotlin Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform) the `awtComponent` variable is a `ComposeWindow` object that might be obtained from `androidx.compose.ui.window.WindowScope`. 
