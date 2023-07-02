@@ -1,7 +1,5 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    kotlin("jvm") version "1.5.32"
+    kotlin("jvm") version "1.8.22"
     id("maven-publish")
     id("signing")
 }
@@ -20,6 +18,7 @@ java {
 
 kotlin {
     explicitApi()
+    jvmToolchain(8)
 }
 
 dependencies {
@@ -83,10 +82,6 @@ publishing {
 
 signing {
     sign(publishing.publications)
-}
-
-tasks.withType<KotlinCompile>() {
-    kotlinOptions.jvmTarget = "1.8"
 }
 
 tasks.withType<Jar>() {
