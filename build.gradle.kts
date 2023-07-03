@@ -1,7 +1,7 @@
 plugins {
-    kotlin("jvm") version "1.8.22"
-    id("maven-publish")
-    id("signing")
+    alias(libs.plugins.kotlin)
+    `maven-publish`
+    signing
 }
 
 group = "tv.wunderbox"
@@ -22,7 +22,8 @@ kotlin {
 }
 
 dependencies {
-    implementation("net.java.dev.jna:jna:5.13.0")
+    // JNA - https://github.com/java-native-access/jna
+    implementation(libs.jna)
 }
 
 // See:

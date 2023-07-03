@@ -1,0 +1,9 @@
+[versions]
+jna = "5.13.0"
+kotlin = "1.8.22"
+
+[libraries]
+jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
+
+[plugins]
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
