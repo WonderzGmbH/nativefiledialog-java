@@ -5,7 +5,7 @@ public sealed interface FileDialogResult<out T> {
      * Returns `true` if this instance represents a successful outcome.
      * In this case [isFailure] returns `false`.
      */
-    public val isSuccess: Boolean get() = this !is Failure
+    public val isSuccess: Boolean get() = this is Success
 
     /**
      * Returns `true` if this instance represents a failed outcome.
