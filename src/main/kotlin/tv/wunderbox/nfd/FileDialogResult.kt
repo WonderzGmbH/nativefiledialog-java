@@ -13,6 +13,15 @@ public sealed interface FileDialogResult<out T> {
      */
     public val isFailure: Boolean get() = this is Failure
 
+    /**
+     * Returns the encapsulated value if this instance represents [success][isSuccess] or `null`
+     * if it is [failure][isFailure].
+     */
+    public fun getOrNull(): T? = when (this) {
+        is Success -> value
+        is Failure -> null
+    }
+
     public data class Failure(
         val error: FileDialog.Error,
     ) : FileDialogResult<Nothing>
