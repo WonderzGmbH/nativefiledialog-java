@@ -7,6 +7,12 @@ public sealed interface FileDialogResult<out T> {
      */
     public val isSuccess: Boolean get() = this !is Failure
 
+    /**
+     * Returns `true` if this instance represents a failed outcome.
+     * In this case [isSuccess] returns `false`.
+     */
+    public val isFailure: Boolean get() = this is Failure
+
     public data class Failure(
         val error: FileDialog.Error,
     ) : FileDialogResult<Nothing>
