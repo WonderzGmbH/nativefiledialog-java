@@ -22,11 +22,19 @@ public sealed interface FileDialogResult<out T> {
         is Failure -> null
     }
 
-    public data class Failure(
-        val error: FileDialog.Error,
-    ) : FileDialogResult<Nothing>
+    public class Failure(
+        public val error: FileDialog.Error,
+    ) : FileDialogResult<Nothing> {
+        override fun equals(other: Any?): Boolean = other is Failure && error == other.error
+        override fun hashCode(): Int = error.hashCode()
+        override fun toString(): String = "Failure(${error.name})"
+    }
 
-    public data class Success<T>(
-        val value: T,
-    ) : FileDialogResult<T>
+    public class Success<T>(
+        public val value: T,
+    ) : FileDialogResult<T> {
+        override fun equals(other: Any?): Boolean = other is Success<*> && value == other.value
+        override fun hashCode(): Int = value.hashCode()
+        override fun toString(): String = "Success(value=$value)"
+    }
 }
