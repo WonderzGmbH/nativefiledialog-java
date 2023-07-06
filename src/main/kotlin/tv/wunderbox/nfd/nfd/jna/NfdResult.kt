@@ -9,7 +9,7 @@ public enum class NfdResult : NativeMapped {
     NFD_CANCEL; /* user pressed cancel */
 
     override fun fromNative(nativeValue: Any?, context: FromNativeContext?): Any {
-        return values()[nativeValue as Int]
+        return entries[nativeValue as Int]
     }
 
     override fun toNative(): Any = ordinal

@@ -1,6 +1,6 @@
 [versions]
 jna = "5.13.0"
-kotlin = "1.8.22"
+kotlin = "1.9.0"
 
 [libraries]
 jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }

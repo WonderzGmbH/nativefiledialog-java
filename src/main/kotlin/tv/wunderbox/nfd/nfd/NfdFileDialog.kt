@@ -100,7 +100,7 @@ public class NfdFileDialog : FileDialog {
             return FileDialogResult.Failure(FileDialog.Error.ERROR)
         }
 
-        val files = (0 until count)
+        val files = (0..<count)
             .map { index ->
                 val outPathPointer = PointerByReference()
                 val pathResult = nfd.NFD_PathSet_GetPathN(
